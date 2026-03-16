@@ -389,5 +389,5 @@ int main(int argc, char *argv[]) {
     NtResumeProcess(hProcess);
     CloseHandle(hProcess);
 
-    return 0;
+    return (patched == 0);
 }
