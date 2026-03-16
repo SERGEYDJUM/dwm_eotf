@@ -115,7 +115,7 @@ void FixChecksum(DXBCShader *shader) {
 }
 
 float srgbConstants[] = {2.4f, 0.04045f, 0.055000f, 0.94786733f};
-float patchedConstants[] = {2.4f, 0, 0, 1};
+float patchedConstants[] = {2.2f, 0, 0, 1};
 
 BOOL PatchShader(DXBCShader *shader) {
     BYTE *raw = (BYTE *) shader;
@@ -388,10 +388,6 @@ int main(int argc, char *argv[]) {
 
     NtResumeProcess(hProcess);
     CloseHandle(hProcess);
-
-    printf("All good?\n");
-
-    system("pause");
 
     return 0;
 }
