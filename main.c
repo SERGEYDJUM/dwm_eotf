@@ -18,7 +18,7 @@ BOOL SetPrivilege(
             lpszPrivilege,   // privilege to lookup
             &luid))        // receives LUID of privilege
     {
-        printf("LookupPrivilegeValue error: %u\n", GetLastError());
+        printf("LookupPrivilegeValue error: %u\n", (unsigned int)GetLastError());
         return FALSE;
     }
 
@@ -36,7 +36,7 @@ BOOL SetPrivilege(
             sizeof(TOKEN_PRIVILEGES),
             (PTOKEN_PRIVILEGES) NULL,
             (PDWORD) NULL)) {
-        printf("AdjustTokenPrivileges error: %u\n", GetLastError());
+        printf("AdjustTokenPrivileges error: %u\n", (unsigned int)GetLastError());
         return FALSE;
     }
 
@@ -343,7 +343,7 @@ int main(int argc, char *argv[]) {
 
     while (VirtualQueryEx(hProcess, addr + offset, &mbi, sizeof(mbi))) {
         if (mbi.RegionSize > 4096 && mbi.State == MEM_COMMIT && mbi.Protect == PAGE_READONLY) {
-            BYTE buffer[mbi.RegionSize];
+            BYTE* buffer = (BYTE*)malloc(mbi.RegionSize);
 
             ReadProcessMemory(hProcess, mbi.BaseAddress, buffer, mbi.RegionSize, &bytesRead);
 
@@ -363,6 +363,7 @@ int main(int argc, char *argv[]) {
                 return 1;
             }
 
+            free(buffer);
             break;
         }
         offset += mbi.RegionSize;
